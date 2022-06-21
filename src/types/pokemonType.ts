@@ -1,9 +1,13 @@
 import { ThunkDispatch } from "redux-thunk";
-
+export const POKEMON_LOADING = "POKEMON_LOADING";
+export const POKEMON_FAIL = "POKEMON_FAIL";
+export const POKEMON_SUCCESS = "POKEMON_SUCCESS";
 export type PokemonType = {
   abilities: PokemonAbility[];
   sprites: PokemonSprites;
   stats: PokemonStat[];
+  name:string;
+  weight:number;
 };
 export interface PokemonState {
   pokemon: PokemonType;
@@ -27,15 +31,17 @@ export type PokemonStat = {
     name: string;
   };
 };
-export interface POKEMON_LOADING {
-  type: "POKEMON_LOADING";
+ interface POKEMON_LOADING {
+  type: typeof POKEMON_LOADING
 }
-export interface POKEMON_FAIL {
-  type: "POKEMON_FAIL";
+
+interface POKEMON_FAIL {
+  type: typeof POKEMON_FAIL
 }
-export interface POKEMON_SUCCESS {
-  type: "POKEMON_SUCCESS";
-  payload: PokemonType;
+
+interface POKEMON_SUCCESS {
+  type: typeof POKEMON_SUCCESS,
+  payload: PokemonType
 }
 export type PokemonAction = POKEMON_LOADING | POKEMON_FAIL | POKEMON_SUCCESS;
 export type PokemonDispatch = ThunkDispatch<PokemonState, void, PokemonAction>;

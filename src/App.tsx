@@ -1,28 +1,37 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, ChangeEvent, MouseEvent } from "react";
 import { useSelector, useDispatch, TypedUseSelectorHook } from "react-redux";
 import { getPokemon } from "./redux/actions/pokemonAction";
-import { RootStore } from ".";
-import { AppDispatch } from ".";
-export const useAppDispatch = () => useDispatch<AppDispatch>();
-export const useAppSelector: TypedUseSelectorHook<RootStore> = useSelector;
+import { useAppDispatch, useAppSelector } from "./redux/hooks";
 const App = () => {
-  const pokemonState = useAppSelector(state => state.pokemonReducer);
+  const pokemonState = useAppSelector((state) => state.pokemonReducer);
 
-  console.log(pokemonState);
 
   const dispatch = useAppDispatch();
-  const [pokemonName, setPokemonName] = useState("ditto");
+  const [pokemonName, setPokemonName] = useState("");
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     setPokemonName(event.target.value);
 
-  useEffect(() => {
-    dispatch(getPokemon(pokemonName))
-  }, []);
+  const sendName = (
+    event: MouseEvent<HTMLButtonElement | HTMLAnchorElement>
+  ) => {
+    event.preventDefault();
+    dispatch(getPokemon(pokemonName));
+  };
 
   return (
-    <div className="App">
-      <input type="text" onChange={handleChange} />
-    </div>
+    <>
+      {" "}
+      <div className="App">
+        <input type="text" onChange={handleChange} />
+        <button onClick={sendName}>click</button>
+      </div>
+      <ul>
+        <li>{pokemonState.error?pokemonState.error:""}</li>
+       <li>{pokemonState.pokemon.name}</li>
+       <li>{pokemonState.pokemon.weight}</li>
+      </ul>
+    </>
   );
 };
 
